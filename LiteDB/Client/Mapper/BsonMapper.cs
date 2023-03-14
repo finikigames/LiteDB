@@ -49,11 +49,6 @@ namespace LiteDB
         private readonly ITypeNameBinder _typeNameBinder;
 
         /// <summary>
-        /// Global instance used when no BsonMapper are passed in LiteDatabase ctor
-        /// </summary>
-        public static BsonMapper Global = new BsonMapper();
-
-        /// <summary>
         /// A resolver name for field
         /// </summary>
         public Func<string, string> ResolveFieldName;
@@ -499,11 +494,6 @@ namespace LiteDB
                     ["$ref"] = collection
                 };
 
-                if (member.DataType != obj.GetType())
-                {
-                    bsonDocument["$type"] = typeNameBinder.GetName(obj.GetType());
-                }
-
                 return bsonDocument;
             };
 
@@ -522,10 +512,6 @@ namespace LiteDB
                 if (included)
                 {
                     doc["_id"] = idRef;
-                    if (doc.ContainsKey("$type"))
-                    {
-                        doc["_type"] = bson["$type"];
-                    }
 
                     return m.Deserialize(entity.ForType, doc);
 
@@ -533,8 +519,6 @@ namespace LiteDB
                 else
                 {
                     return m.Deserialize(entity.ForType,
-                        doc.ContainsKey("$type") ?
-                            new BsonDocument { ["_id"] = idRef, ["_type"] = bson["$type"] } :
                             new BsonDocument { ["_id"] = idRef }); // if has $id, deserialize object using only _id object
                 }
 
@@ -569,11 +553,6 @@ namespace LiteDB
                         ["$ref"] = collection
                     };
 
-                    if (member.UnderlyingType != item.GetType())
-                    {
-                        bsonDocument["$type"] = typeNameBinder.GetName(item.GetType());
-                    }
-
                     result.Add(bsonDocument);
                 }
 
@@ -607,21 +586,12 @@ namespace LiteDB
                     if (included)
                     {
                         item["_id"] = idRef;
-                        if (item.AsDocument.ContainsKey("$type"))
-                        {
-                            item["_type"] = item["$type"];
-                        }
 
                         result.Add(item);
                     }
                     else
                     {
                         var bsonDocument = new BsonDocument { ["_id"] = idRef };
-
-                        if (item.AsDocument.ContainsKey("$type"))
-                        {
-                            bsonDocument["_type"] = item["$type"];
-                        }
 
                         result.Add(bsonDocument);
                     }

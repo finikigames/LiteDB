@@ -51,7 +51,7 @@ namespace LiteDB
             }
 
             _engine = connectionString.CreateEngine();
-            _mapper = mapper ?? BsonMapper.Global;
+            _mapper = mapper;
             _disposeOnClose = true;
         }
 
@@ -70,7 +70,7 @@ namespace LiteDB
             };
 
             _engine = new LiteEngine(settings);
-            _mapper = mapper ?? BsonMapper.Global;
+            _mapper = mapper;
             _disposeOnClose = true;
         }
 
@@ -80,7 +80,7 @@ namespace LiteDB
         public LiteDatabase(ILiteEngine engine, BsonMapper mapper = null, bool disposeOnClose = true)
         {
             _engine = engine ?? throw new ArgumentNullException(nameof(engine));
-            _mapper = mapper ?? BsonMapper.Global;
+            _mapper = mapper;
             _disposeOnClose = disposeOnClose;
         }
 

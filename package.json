@@ -1,0 +1,15 @@
+{
+    "name": "com.finikigames.litedb",
+    "author": "Finiki Games",
+    "displayName": "litedb fork",
+    "description": "Fork of lite db",
+    "version": "1.0.0",
+    "keywords": [
+        "litedb"
+    ],
+    "dependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/finikigames/LiteDB.git"
+    }
+}
